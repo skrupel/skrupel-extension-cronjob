@@ -1,0 +1,13 @@
+Order deny,allow
+Allow from all
+
+# Cache erlauben, um Seitengenerierung zu beschleunigen:
+Header set Cache-Control "store, cache, max-age=2"
+Header set Pragma "cache"
+
+# Maximale PHP-Laufzeit
+php_value max_execution_time 500
+
+# Error-Reporting:
+# php_flag display_errors on
+# php_value error_reporting 30711
