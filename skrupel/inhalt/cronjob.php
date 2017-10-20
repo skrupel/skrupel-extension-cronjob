@@ -1,8 +1,8 @@
 <?php
-include ('../inc.conf.php');
+include '../inc.conf.php';
 
-$conn = @mysql_connect($server.':'.$port,$login,$password);
-$db = @mysql_select_db($database,$conn);
+$conn = @mysql_connect($server.':'.$port, $login, $password);
+$db = @mysql_select_db($database, $conn);
 
 $zeiger = @mysql_query("SELECT * FROM $skrupel_info");
 $array1 = @mysql_fetch_array($zeiger);
@@ -17,9 +17,8 @@ $spiel_serial = $array1['serial'];
 $zeiger_temp = @mysql_query("SELECT * FROM $skrupel_spiele WHERE phase=0 AND autozug>0 ORDER BY lasttick+3600*autozug;");
 $spielanzahl = @mysql_num_rows($zeiger_temp);
 
-if ($spielanzahl>=1) {
-
-   $ok = @mysql_data_seek($zeiger_temp,0);
+if ($spielanzahl >= 1) {
+   $ok = @mysql_data_seek($zeiger_temp, 0);
    $array2 = @mysql_fetch_array($zeiger_temp);
 
    $autozug = $array2['autozug'];
@@ -42,7 +41,7 @@ if ($spielanzahl>=1) {
    $spieler_9 = $array2['spieler_9'];
    $spieler_10 = $array2['spieler_10'];
 
-   for($sp=1; $sp<=10; $sp++) {
+   for ($sp = 1; $sp <= 10; $sp++) {
       $tmpstr = 'spieler_'.$sp;
       $spieler_id_c[$sp] = $array2[$tmpstr];
       $spieler_ziel_c[$sp] = $array2[$tmpstr.'_ziel'];
@@ -70,16 +69,16 @@ if ($spielanzahl>=1) {
    $phase = $array2['phase'];
 
    $aktuell = time();
-   $interval = 3600*$autozug;
+   $interval = 3600 * $autozug;
 
-   if (($aktuell>=$lasttick+$interval) && ($runde>1)) {
+   if (($aktuell >= $lasttick + $interval) && ($runde > 1)) {
 
-      $lasttick=time();
+      $lasttick = time();
 
       $zeiger = mysql_query("UPDATE $skrupel_spiele SET lasttick='$lasttick' WHERE id=$spiel;");
 
       $main_verzeichnis = '../';
-      include_once ('inc.host.php');
+      include_once 'inc.host.php';
 
       $zeiger = mysql_query("UPDATE $skrupel_spiele set spieler_1_zug=0,spieler_2_zug=0,spieler_3_zug=0,spieler_4_zug=0,spieler_5_zug=0,spieler_6_zug=0,spieler_7_zug=0,spieler_8_zug=0,spieler_9_zug=0,spieler_10_zug=0 where id=$spiel;");
 
@@ -87,4 +86,3 @@ if ($spielanzahl>=1) {
 }
 
 @mysql_close();
-?>
